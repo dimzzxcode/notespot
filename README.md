@@ -58,11 +58,9 @@ npm run lint
 
 ## Screenshot
 
-```md
 ![Login](screenshot/login.png)
 ![Register](screenshot/register.png)
-![Notes List](screenshot/notes-list.png)
-```
+![Notes List](screenshot/note-list.png)
 
 ---
 
