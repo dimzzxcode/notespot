@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Notespot
 
-## Getting Started
+Web-based note-taking application dengan rich text editing, autosave, dan full-text search.
 
-First, run the development server:
+**Tentang:** Notespot adalah portfolio project untuk menyimpan, mengedit, dan mencari catatan pribadi dengan cepat. Fokusnya simple product, solid engineering — bukan fitur banyak, tapi implementasi rapi: CRUD terisolasi per user (login/register), editor Tiptap, debounce autosave 3 detik, PostgreSQL full-text search (GIN), validasi Zod, dan UI responsive light.
 
+## Tech Stack
+
+**Frontend:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, Tiptap, TanStack Query, React Hook Form + Zod, Lucide React
+
+**Backend:** Next.js Route Handlers, Zod, Jose (JWT), bcryptjs
+
+**Database:** PostgreSQL, Drizzle ORM, postgres.js, Full-Text Search (tsvector/tsquery + GIN index)
+
+## Cara Menjalankan
+
+**1. Clone & install**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repo-url>
+cd notespot-app
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**2. Environment**
+```bash
+cp .env.example .env
+# isi:
+# DATABASE_URL=postgres://postgres:postgres@localhost:5432/notespot
+# AUTH_SECRET=generate-dengan-openssl-rand-base64-32
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**3. Database (local Postgres)**
+```bash
+# buat DB jika belum ada (atau via psql CREATE DATABASE notespot)
+# jalankan migrasi
+# pakai psql atau via node:
+node -e "import postgres from 'postgres'; import fs from 'fs'; const sql=postgres(process.env.DATABASE_URL); await sql.unsafe(fs.readFileSync('drizzle/0000_create_notes.sql','utf8')); await sql.unsafe(fs.readFileSync('drizzle/0001_add_auth.sql','utf8')); await sql.end()"
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**4. Seed (opsional)**
+```bash
+npm run db:seed
+# buat demo user: demo@notespot.app / Demo12345 + 12 notes (user baru register start kosong)
+```
 
-## Learn More
+**5. Dev**
+```bash
+npm run dev
+# buka http://localhost:3000
+# register di /register, login di /login (public), atau pakai demo@notespot.app
+```
 
-To learn more about Next.js, take a look at the following resources:
+**Build & lint**
+```bash
+npm run build
+npm run lint
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Screenshot
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```md
+![Login](screenshot/login.png)
+![Register](screenshot/register.png)
+![Notes List](screenshot/notes-list.png)
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Created by **dimzzxcode**
